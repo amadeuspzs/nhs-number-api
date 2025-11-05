@@ -1,0 +1,22 @@
+[project]
+name = "nhs-number-api"
+version = "0.1.0"
+description = "A simple FastAPI web wrapper for nhs_number."
+authors = [{ name = "🤖" }]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "nhs-number"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+nhs-number-api = "nhs_number_api.cli:main"
