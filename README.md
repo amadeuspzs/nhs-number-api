@@ -47,6 +47,8 @@ docker run --rm -p 8000:8000 \
 	nhs-number-api:local
 ```
 
+Open http://127.0.0.1:8000 to view the API and the automatically generated OpenAPI docs.
+
 ## Kustomize
 
 This repository includes a `k8s/` directory with Kubernetes manifests and a `kustomization.yaml` that applies them in the correct order (namespace first).
