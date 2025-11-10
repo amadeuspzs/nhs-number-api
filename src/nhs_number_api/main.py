@@ -1,7 +1,8 @@
-from nhs_number import generate
+# 🤖 coded - here be dragons
+import nhs_number
+
 from fastapi import FastAPI, Query, HTTPException
 from pydantic import BaseModel
-import nhs_number
 
 app = FastAPI(title="NHS Number API")
 
@@ -89,7 +90,7 @@ def generate_numbers(
     if region_obj is None:
         raise HTTPException(status_code=400, detail=f"Invalid region: {region}")
 
-    numbers = generate(quantity=quantity, for_region=region_obj)
+    numbers = nhs_number.generate(quantity=quantity, for_region=region_obj)
     return {"numbers": numbers}
 
 

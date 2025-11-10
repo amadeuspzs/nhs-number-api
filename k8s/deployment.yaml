@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nhs-number-api
+  namespace: nhsrpysoc
+  labels:
+    app: nhs-number-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nhs-number-api
+  template:
+    metadata:
+      labels:
+        app: nhs-number-api
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: nhs-number-api
+          image: ghcr.io/amadeuspzs/nhs-number-api/nhs-number-api:v0.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8888
+              name: http
+          securityContext:
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true

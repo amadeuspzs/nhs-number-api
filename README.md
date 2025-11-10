@@ -26,10 +26,10 @@ Run the application using the project entry point. The package provides a CLI en
 ```bash
 uv run nhs-number-api
 # or, if the `uv` CLI isn't available, use uvicorn directly:
-uvicorn nhs_number_api.main:app --host 0.0.0.0 --port 8000
+uvicorn nhs_number_api.main:app --host 0.0.0.0 --port 8888
 ```
 
-Open http://127.0.0.1:8000 to view the API and the automatically generated OpenAPI docs.
+Open http://127.0.0.1:8888 to view the API and the automatically generated OpenAPI docs.
 
 ## Container (build & run)
 
@@ -37,17 +37,28 @@ This repository includes a `Containerfile` that builds a non-root, read-only-fri
 
 ```bash
 # Build the image (from repo root)
-docker build -f Containerfile -t nhs-number-api:local .
+docker build -f Containerfile -t nhs-number-api:v0.0.1 .
 
-# Run the container with a read-only root filesystem and writable tmp directories
-docker run --rm -p 8000:8000 \
+# Run the container with a read-only root filesystem
+docker run --rm -p 8888:8888 \
 	--read-only \
-	--tmpfs /tmp:rw \
-	--tmpfs /var/tmp:rw \
-	nhs-number-api:local
+	nhs-number-api:v0.0.1
 ```
 
-Open http://127.0.0.1:8000 to view the API and the automatically generated OpenAPI docs.
+docker run --rm -p 8888:8888 \
+	--read-only \
+	nhs-number-api:v0.0.1
+	
+Open http://127.0.0.1:8888 to view the API and the automatically generated OpenAPI docs.
+
+## Container (push)
+
+You'll need to tag and push the locally built container next (replace registry/path accordingly):
+
+```bash
+docker tag nhs-number-api:v0.0.1 ghcr.io/amadeuspzs/nhs-number-api/nhs-number-api:v0.0.1
+docker push ghcr.io/amadeuspzs/nhs-number-api/nhs-number-api:v0.0.1
+```
 
 ## Kustomize
 
@@ -56,24 +67,6 @@ This repository includes a `k8s/` directory with Kubernetes manifests and a `kus
 To deploy the app with kustomize (recommended for grouped resources):
 
 ```bash
-# Make sure you've built and pushed your image (replace registry/path accordingly):
-docker build -f Containerfile -t your-registry/nhs-number-api:latest .
-docker push your-registry/nhs-number-api:latest
-
 # Apply everything using kustomize which reads k8s/kustomization.yaml
 kubectl apply -k k8s/
-```
-
-Notes:
-- `kustomization.yaml` sets namespace: `nhsrpysoc`, so resources will be created in that namespace automatically.
-- If you need to change the image tag, either update `k8s/deployment.yaml` or use `kubectl set image`:
-
-```bash
-kubectl -n nhsrpysoc set image deployment/nhs-number-api nhs-number-api=your-registry/nhs-number-api:mytag
-```
-
-- To delete the resources applied via kustomize:
-
-```bash
-kubectl delete -k k8s/
 ```

@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nhs-number-api
+  namespace: nhsrpysoc
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+    - host: nhs-rpysoc.rsna.newtonstree.ai
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nhs-number-api
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - nhs-rpysoc.rsna.newtonstree.ai
