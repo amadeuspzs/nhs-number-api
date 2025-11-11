@@ -45,10 +45,16 @@ docker run --rm -p 8888:8888 \
 	nhs-number-api:v0.0.1
 ```
 
-docker run --rm -p 8888:8888 \
-	--read-only \
-	nhs-number-api:v0.0.1
-	
+<!-- For MacOS:
+```bash 
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  --push \
+  -t ghcr.io/amadeuspzs/nhs-number-api/nhs-number-api:v0.0.1 \
+  -f Containerfile .
+```
+-->	
+
 Open http://127.0.0.1:8888 to view the API and the automatically generated OpenAPI docs.
 
 ## Container (push)
