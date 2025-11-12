@@ -4,9 +4,9 @@ metadata:
   name: nhs-number-api
   namespace: nhsrpysoc
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
+  ingressClassName: nginx
   rules:
     - host: nhs-rpysoc.rsna.newtonstree.ai
       http:
